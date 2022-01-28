@@ -10,7 +10,7 @@ inputs:
     description: 'Map from team name shorthand used on tickets to the project system the team uses.'
     required: true
     default: "{}"
-  team:
+  teams:
     description: 'Array of team prefixes for ticker names.'
     required: true
     default: "[]"
@@ -30,27 +30,26 @@ inputs:
     description: 'Blah'
     required: true
     default: ""
-  # pull_request_compare_branch_name:
-  #   description: 'Branch to be merged into the Base Branch.'
-  #   required: true
-  #   default: ""
-  # pull_request_base_branch_name:
-  #   description: 'Base Branch to be merged into.'
-  #   required: true
-  #   default: "development"
+  pull_request_compare_branch_name:
+    description: 'Branch to be merged into the Base Branch.'
+    required: true
+    default: ""
+  pull_request_base_branch_name:
+    description: 'Base Branch to be merged into.'
+    required: true
+    default: "development"
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.team_to_project_id }}
     - ${{ inputs.team_to_project_system }}
-    - ${{ inputs.team }}
+    - ${{ inputs.teams }}
     - ${{ inputs.jira_api_user }}
     - ${{ inputs.jira_api_token }}
     - ${{ inputs.pivotal_api_token }}
-    - ${{ inputs.test_var }}
-    # - ${{ github.event.pull_request.head.ref }}
-    # - ${{ github.event.pull_request.base.ref }}
+    - ${{ inputs.pull_request_compare_branch_name }}
+    - ${{ inputs.pull_request_base_branch_name }}
 branding:
   icon: "git-pull-request"
   color: "orange"
