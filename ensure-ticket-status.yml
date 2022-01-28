@@ -25,10 +25,10 @@ jobs:
             {
               "BAT": "2530518",
             }
-          jira_api_user: ${{ NONPROD_JIRA_API_USER }}
-          jira_api_token: ${{ NONPROD_JIRA_API_TOKEN }}
+          jira_api_user: ${{ secrets.NONPROD_JIRA_API_USER }}
+          jira_api_token: ${{ secrets.NONPROD_JIRA_API_TOKEN }}
           # Pivotal only requires a token.
-          pivotal_api_token: ${{ NONPROD_PIVOTAL_API_TOKEN }}
+          pivotal_api_token: ${{ secrets.NONPROD_PIVOTAL_API_TOKEN }}
           teams: |
             [
               "BAT",
