@@ -62,6 +62,10 @@ def dispatch_ticket_request(ticket)
   end
 end
 
+`pwd`
+`ls`
+
+
 teams = JSON.parse(ENV["INPUT_TEAMS"])
 branch_name = ""
 compare_branch = ENV["INPUT_PULL_REQUEST_COMPARE_BRANCH_NAME"]
