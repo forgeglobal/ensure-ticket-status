@@ -5,4 +5,4 @@ WORKDIR /usr/src
 RUN bundle install
 
 
-ENTRYPOINT ["bash", "/src/entrypoint.sh"]
+ENTRYPOINT ["bash", "entrypoint.sh"]
