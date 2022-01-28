@@ -29,11 +29,6 @@ jobs:
           jira_api_token: ${{ NONPROD_JIRA_API_TOKEN }}
           # Pivotal only requires a token.
           pivotal_api_token: ${{ NONPROD_PIVOTAL_API_TOKEN }}
-          # |
-          #   {
-          #     "jira": ["", ""],
-          #     "pivotal": ["", ""],
-          #   }
           teams: |
             [
               "BAT",
