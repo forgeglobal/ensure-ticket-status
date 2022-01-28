@@ -3,7 +3,7 @@ name: Ensure Ticket Status
 on:  
   pull_request:
     # Be aware you cannot use both branches and branches-ignore together 
-    # Be aware this will skip if either the base or the compare branch is in here.
+    # Be aware this will skip the action for a pull request if either the base or the compare branch is in this list.
     branches-ignore:
       - master
 
@@ -17,8 +17,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: Perform Ticket Check
-        # uses: forgeglobal/ensure-ticket-status@master
-        # uses: ./ # Uses an action in the root directory
+        uses: forgeglobal/ensure-ticket-status@master
+        # uses: ./ # Uses an action in the root directory, for local testing
         
         with:
           # Defaults to jira unless specified here.

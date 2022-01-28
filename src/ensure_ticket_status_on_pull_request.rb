@@ -3,13 +3,7 @@ require 'json'
 require_relative 'api_credentials'
 require_relative 'ticket'
 require_relative 'ticket_system_query'
-
-# ENV["INPUT_TEAM_TO_PROJECT_ID"] = '{ "BAT": "2530518" }'
-
-# ENV["INPUT_TEAM_TO_PROJECT_SYSTEM"] = '{ "BAT": "pivotal" }'
-
-# ENV["INPUT_PROJECT_SYSTEM_CREDENTIALS"] = '{ "jira": ["", ""], "pivotal": ["", ""] }'
-
+require_relative 'ticket_extractor'
 
 def pivotal_story_endpoint(project_id, story_id) 
   "https://www.pivotaltracker.com/services/v5/projects/#{project_id}/stories/#{story_id}"
@@ -62,53 +56,38 @@ def dispatch_ticket_request(ticket)
   end
 end
 
-puts `pwd`
-puts `ls`
+# --- main ---
 
-
-teams = JSON.parse(ENV["INPUT_TEAMS"])
-branch_name = ""
 compare_branch = ENV["INPUT_PULL_REQUEST_COMPARE_BRANCH_NAME"]
 base_branch = ENV["INPUT_PULL_REQUEST_BASE_BRANCH_NAME"]
 
-# parse ticket id out of branch
-commits = `git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative origin/#{base_branch}..origin/#{compare_branch}`
-puts commits
+ticket_extractor = TicketExtractor.new
+ticket_ids = ticket_extractor.extract_ticket_ids_from_commit_diff(base_branch, compare_branch) + 
+                [ticket_extractor.extract_ticket_id_from_branch_name(compare_branch)]
 
-ticket_id = "SHAR-1365" # strip off pr branch
+unique_ticket_ids = ticket_ids.flatten.uniq
 
 ticket_system = TicketSystemQuery.new
-ticket = Ticket.new(ticket_system, ticket_id)
-return_response = dispatch_ticket_request(ticket)
-puts "Ticket #{ticket.raw_ticket_id} passed all ticket checks."
+maybe_validation_errors = unique_ticket_ids.map {|ticket_id| 
+  validation_error = nil
+  begin
+    ticket = Ticket.new(ticket_system, ticket_id)
+    dispatch_ticket_request(ticket)
+    puts "Ticket #{ticket_id} passed all ticket checks."
+  rescue StandardError => err
+    validation_error = err
+    puts "Ticket #{ticket_id} failed some ticket checks: #{err.message}"
+  end
 
-# ------
+  validation_error
+}
 
-# # remove to env var
-# ticket_prefixes = ["DATA","SHAR"]
-# team_release_owners_slack_mentions = {
-#   "DATA": ["@keithfarley"],
-#   "SHAR": ["@mattmayne"]
-# }
+validation_errors = maybe_validation_errors.select{ |maybe_err| !maybe_err.nil? }
 
-# commits = `git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative master..development`
-# ticket_ids = commits.split("\n").map {|line| line.scan(/DATA\-\d+/) + line.scan(/SHAR\-\d+/) }.flatten.uniq
+if validation_errors.empty?
+  puts "All ticket(s) in #{unique_ticket_ids} passed validation."
+else
+  error_output = validation_errors.map { |err| err.message }.join("\n")
 
-# lines = []
-# Parallel.map(ticket_ids, in_processes: 4) do
-#   # remove creds to env var
-#   username = ""
-#   token = ""
-#   resp = `curl -s -u #{username}:#{token} -X GET -H "Content-Type: application/json" https://forgeglobal.atlassian.net/rest/api/2/issue/#{ticket_id}`
-#   resp = JSON.parse(resp)
-#   status = resp.dig("fields", "status", "name")
-#   # label no-impact-on-release for bypass
-#   # add PR link, require product approval on PR
-#   title = resp.dig("fields", "summary")
-
-#   [ticket_id, status, title] # title nil for nonexist ticket
-# end
-
-# lines.each do |ticket_id, status, title|
-#   puts "#{ticket_id} - #{status} - #{title}"
-# end
+  raise StandardError.new "Some ticket(s) in #{unique_ticket_ids} failed validation: \n#{error_output}"
+end
