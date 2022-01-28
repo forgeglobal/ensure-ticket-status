@@ -4,5 +4,6 @@ COPY src /usr
 WORKDIR /usr/src
 RUN bundle install
 
+RUN pwd
 # For github docker action workdir will be '--workdir /github/workspace'
 ENTRYPOINT ["bash", "/usr/src/entrypoint.sh"]
