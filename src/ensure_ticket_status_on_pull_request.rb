@@ -89,7 +89,7 @@ puts "Ticket #{ticket.raw_ticket_id} passed all ticket checks."
 # lines = []
 # Parallel.map(ticket_ids, in_processes: 4) do
 #   # remove creds to env var
-#   username = "peter.min@forgeglobal.com"
+#   username = ""
 #   token = ""
 #   resp = `curl -s -u #{username}:#{token} -X GET -H "Content-Type: application/json" https://forgeglobal.atlassian.net/rest/api/2/issue/#{ticket_id}`
 #   resp = JSON.parse(resp)

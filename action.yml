@@ -3,7 +3,7 @@ name: 'Ensure Ticket Accepted'
 description: 'Ensures a JIRA ticket is accepted before pull request merge.'
 inputs:
   team_to_project_id:
-    description: 'Map from team name shorthand used on tickets to the project id that the project system uses for the team, if any. (JIRA does not require any.)'
+    description: 'Map from team name shorthand used on tickets to the project id that the project system uses for the team, if any. (JIRA does not require a project id.)'
     required: true
     default: "{}"
   team_to_project_system:
@@ -44,6 +44,8 @@ runs:
     - ${{ inputs.jira_api_user }}
     - ${{ inputs.jira_api_token }}
     - ${{ inputs.pivotal_api_token }}
+    - ${{ github.event.pull_request.head.ref }}
+    - ${{ github.event.pull_request.base.ref }}
 branding:
   icon: "git-pull-request"
   color: "orange"

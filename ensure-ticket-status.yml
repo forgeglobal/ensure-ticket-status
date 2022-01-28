@@ -35,6 +35,6 @@ jobs:
               "SHAR",
               "DATA",
             ]
-          pull_request_compare_branch_name: ${{ github.event.pull_request.head.ref }}
-          pull_request_base_branch_name: ${{ github.event.pull_request.base.ref }}
+          # pull_request_compare_branch_name: ${{ github.event.pull_request.head.ref }}
+          # pull_request_base_branch_name: ${{ github.event.pull_request.base.ref }}
           
