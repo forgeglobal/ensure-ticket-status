@@ -7,7 +7,7 @@ class TicketSystemQuery
     if alternative_team_ticket_system_map.key?(ticket.team_segment)
       team_ticket_system = alternative_team_ticket_system_map[ticket.team_segment] 
       if !team_ticket_system.nil? && team_ticket_system != ""
-        ticket_system = team_ticket_system
+        ticket_system = team_ticket_system.downcase
       end
     end
 

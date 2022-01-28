@@ -65,7 +65,7 @@ end
 puts "Environment is:"
 puts ENV.inspect
 
-teams = ENV["INPUT_TEAMS"]
+teams = JSON.parse(ENV["INPUT_TEAMS"])
 branch_name = ""
 # parse ticket id out of branch
 
