@@ -19,11 +19,11 @@ jobs:
           # Defaults to jira unless specified here.
           team_to_project_system: |
             {
-              "BAT": "pivotal",
+              "BAT": "pivotal"
             }
           team_to_project_id: |
             {
-              "BAT": "2530518",
+              "BAT": "2530518"
             }
           jira_api_user: ${{ secrets.NONPROD_JIRA_API_USER }}
           jira_api_token: ${{ secrets.NONPROD_JIRA_API_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
               "BAT",
               "SHAR",
               "DATA",
-              "TECOP",
+              "TECOP"
             ]
           pull_request_compare_branch_name: ${{ github.event.pull_request.head.ref }}
           pull_request_base_branch_name: ${{ github.event.pull_request.base.ref }}
