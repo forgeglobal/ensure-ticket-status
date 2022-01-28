@@ -1,79 +1,14 @@
 require 'json'
 
-ENV["INPUT_TEAM_TO_PROJECT_ID"] = '{ "BAT": "2530518" }'
+require_relative 'api_credentials'
+require_relative 'ticket'
+require_relative 'ticket_system_query'
 
-ENV["INPUT_TEAM_TO_PROJECT_SYSTEM"] = '{ "BAT": "pivotal" }'
+# ENV["INPUT_TEAM_TO_PROJECT_ID"] = '{ "BAT": "2530518" }'
 
-ENV["INPUT_PROJECT_SYSTEM_CREDENTIALS"] = '{ "jira": ["", ""], "pivotal": ["", ""] }'
+# ENV["INPUT_TEAM_TO_PROJECT_SYSTEM"] = '{ "BAT": "pivotal" }'
 
-class ApiCredentials
-  def self.ticket_system_creds 
-    JSON.parse(ENV["INPUT_PROJECT_SYSTEM_CREDENTIALS"])
-  end
-end
-
-class TicketSystemQuery
-  JIRA = "jira"
-  PIVOTAL = "pivotal"
-
-  def find_ticket_system(ticket)
-    ticket_system = TicketSystemQuery::JIRA
-    if alternative_team_ticket_system_map.key?(ticket.team_segment)
-      team_ticket_system = alternative_team_ticket_system_map[ticket.team_segment] 
-      if !team_ticket_system.nil? && team_ticket_system != ""
-        ticket_system = team_ticket_system
-      end
-    end
-
-    ticket_system
-  end
-
-  def find_project_id(ticket)
-    project_id = nil
-    if team_project_id_map.key?(ticket.team_segment)
-      team_project_id = team_project_id_map[ticket.team_segment] 
-      if !team_project_id.nil? && team_project_id != ""
-        project_id = team_project_id
-      end
-    end
-
-    project_id
-  end
-
-  private
-
-  def alternative_team_ticket_system_map 
-    @alternative_team_ticket_system_map ||= JSON.parse(ENV["INPUT_TEAM_TO_PROJECT_SYSTEM"])
-  end
-
-  def team_project_id_map
-    @team_project_id_map ||= JSON.parse(ENV["INPUT_TEAM_TO_PROJECT_ID"])
-  end
-end
-
-class Ticket 
-  attr_accessor :raw_ticket_id, :team_segment, :id_segment, :ticket_system, :project_id
-
-  def initialize(ticket_system_query, ticket_id)
-    @raw_ticket_id = ticket_id
-    @team_segment, @id_segment = extract_ticket_team_and_numeric_segments(ticket_id)
-    @ticket_system = ticket_system_query.find_ticket_system(self)
-    @project_id = ticket_system_query.find_project_id(self)
-  end
-
-  private 
-
-  def extract_ticket_team_and_numeric_segments(ticket_id) 
-    last_dash = ticket_id.rindex("-")
-    if last_dash.nil?
-      raise StandardError.new("Ticket format failed to parse '#{ticket_id}'. Could not locate a '-' to split.")
-    end
-    team_segment = ticket_id[0..last_dash-1].upcase
-    numeric_segment = ticket_id[last_dash+1..ticket_id.length].upcase
-
-    [team_segment, numeric_segment]
-  end
-end
+# ENV["INPUT_PROJECT_SYSTEM_CREDENTIALS"] = '{ "jira": ["", ""], "pivotal": ["", ""] }'
 
 
 def pivotal_story_endpoint(project_id, story_id) 

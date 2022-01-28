@@ -10,22 +10,40 @@ inputs:
     description: 'Map from team name shorthand used on tickets to the project system the team uses.'
     required: true
     default: "{}"
-  project_system_credentials:
-    description: 'Map from project system to a [user, token] credentials array.'
-    required: true
-    default: "{}"
   team:
     description: 'Array of team prefixes for ticker names.'
     required: true
     default: "[]"
+  jira_api_user:
+    description: 'API User to access the JIRA API.'
+    required: true
+    default: ""
+  jira_api_token:
+    description: 'API Token to access the JIRA API.'
+    required: true
+    default: ""
+  pivotal_api_token:
+    description: 'API Token to access the Pivotal API.'
+    required: true
+    default: ""
+  pull_request_compare_branch_name:
+    description: 'Branch to be merged into the Base Branch.'
+    required: true
+    default: ""
+  pull_request_base_branch_name:
+    description: 'Base Branch to be merged into.'
+    required: true
+    default: "development"
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.team_to_project_id }}
     - ${{ inputs.team_to_project_system }}
-    - ${{ inputs.project_system_credentials }}
     - ${{ inputs.team }}
+    - ${{ inputs.jira_api_user }}
+    - ${{ inputs.jira_api_token }}
+    - ${{ inputs.pivotal_api_token }}
 branding:
   icon: "git-pull-request"
   color: "orange"

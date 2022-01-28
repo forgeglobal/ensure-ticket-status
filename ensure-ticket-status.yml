@@ -13,7 +13,7 @@ jobs:
     name: Ensure Ticket exists and is Accepted
     steps:
       - name: Perform Ticket Check
-        # uses: ForgeRubenAguilar/release-slack-notifier@main
+        # uses: forgeglobal/ensure-ticket-status@master
         # uses: ./ # Uses an action in the root directory
         with:
           # Defaults to jira unless specified here.
@@ -25,12 +25,10 @@ jobs:
             {
               "BAT": "2530518",
             }
-          project_system_credentials: 
-            jira_api_user: ${{ NONPROD_JIRA_API_USER }}
-            jira_api_token: ${{ NONPROD_JIRA_API_TOKEN }}
-            # Pivotal only requires a token.
-            pivotal_api_user: ""
-            pivotal_api_token: ${{ NONPROD_PIVOTAL_API_TOKEN }}
+          jira_api_user: ${{ NONPROD_JIRA_API_USER }}
+          jira_api_token: ${{ NONPROD_JIRA_API_TOKEN }}
+          # Pivotal only requires a token.
+          pivotal_api_token: ${{ NONPROD_PIVOTAL_API_TOKEN }}
           # |
           #   {
           #     "jira": ["", ""],
