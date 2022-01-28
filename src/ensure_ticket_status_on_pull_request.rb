@@ -62,8 +62,8 @@ def dispatch_ticket_request(ticket)
   end
 end
 
-`pwd`
-`ls`
+puts `pwd`
+puts `ls`
 
 
 teams = JSON.parse(ENV["INPUT_TEAMS"])
