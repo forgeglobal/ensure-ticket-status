@@ -12,7 +12,7 @@ class TicketExtractor
     ticket_ids
   end
 
-  def extract_ticket_id_from_branch_name(compare_branch)
+  def extract_ticket_ids_from_branch_name(compare_branch)
     compare_branch.scan(ticket_id_regex)
   end
 
@@ -23,6 +23,7 @@ class TicketExtractor
   end
 
   def ticket_id_regex_init
+    # Regex case invariant on teams for convenience
     teams_regex_segment_upper = teams.map{ |team| Regexp.quote(team.upcase) }.join("|")
     teams_regex_segment_lower = teams.map{ |team| Regexp.quote(team.downcase) }.join("|")
     teams_regex_segment = "#{teams_regex_segment_upper}|#{teams_regex_segment_lower}"

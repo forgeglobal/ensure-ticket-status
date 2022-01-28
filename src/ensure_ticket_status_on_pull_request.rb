@@ -63,7 +63,7 @@ base_branch = ENV["INPUT_PULL_REQUEST_BASE_BRANCH_NAME"]
 
 ticket_extractor = TicketExtractor.new
 ticket_ids = ticket_extractor.extract_ticket_ids_from_commit_diff(base_branch, compare_branch) + 
-                [ticket_extractor.extract_ticket_id_from_branch_name(compare_branch)]
+                ticket_extractor.extract_ticket_ids_from_branch_name(compare_branch)
 
 unique_ticket_ids = ticket_ids.flatten.uniq
 
