@@ -26,14 +26,14 @@ inputs:
     description: 'API Token to access the Pivotal API.'
     required: true
     default: ""
-  pull_request_compare_branch_name:
-    description: 'Branch to be merged into the Base Branch.'
-    required: true
-    default: ""
-  pull_request_base_branch_name:
-    description: 'Base Branch to be merged into.'
-    required: true
-    default: "development"
+  # pull_request_compare_branch_name:
+  #   description: 'Branch to be merged into the Base Branch.'
+  #   required: true
+  #   default: ""
+  # pull_request_base_branch_name:
+  #   description: 'Base Branch to be merged into.'
+  #   required: true
+  #   default: "development"
 runs:
   using: 'docker'
   image: 'Dockerfile'
