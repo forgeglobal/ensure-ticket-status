@@ -12,9 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Ensure Ticket exists and is Accepted
     steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Perform Ticket Check
         # uses: forgeglobal/ensure-ticket-status@master
         # uses: ./ # Uses an action in the root directory
+        
         with:
           # Defaults to jira unless specified here.
           team_to_project_system: |
