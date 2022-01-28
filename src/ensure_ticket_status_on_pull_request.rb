@@ -72,7 +72,7 @@ compare_branch = ENV["INPUT_PULL_REQUEST_COMPARE_BRANCH_NAME"]
 base_branch = ENV["INPUT_PULL_REQUEST_BASE_BRANCH_NAME"]
 
 # parse ticket id out of branch
-commits = `git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative #{base_branch}..#{compare_branch}`
+commits = `git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative origin/#{base_branch}..origin/#{compare_branch}`
 puts commits
 
 ticket_id = "SHAR-1365" # strip off pr branch
