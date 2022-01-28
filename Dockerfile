@@ -5,4 +5,4 @@ WORKDIR /usr/src
 RUN bundle install
 
 
-ENTRYPOINT ["ruby", "/src/jira_message.rb"]
+ENTRYPOINT ["bash", "/src/entrypoint.sh"]
