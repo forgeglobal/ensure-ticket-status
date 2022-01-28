@@ -12,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Ensure Ticket exists and is Accepted
     steps:
+      # Fetch all branch history per: https://github.com/actions/checkout#Fetch-all-history-for-all-tags-and-branches
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
       - name: Perform Ticket Check
         # uses: forgeglobal/ensure-ticket-status@master
         # uses: ./ # Uses an action in the root directory
