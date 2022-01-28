@@ -66,6 +66,7 @@ ticket_ids = ticket_extractor.extract_ticket_ids_from_commit_diff(base_branch, c
                 ticket_extractor.extract_ticket_ids_from_branch_name(compare_branch)
 
 unique_ticket_ids = ticket_ids.flatten.uniq
+puts unique_ticket_ids
 
 ticket_system = TicketSystemQuery.new
 maybe_validation_errors = unique_ticket_ids.map {|ticket_id| 
