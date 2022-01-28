@@ -1,10 +1,8 @@
 FROM ruby:2.7
 
-RUN ls ~
-COPY src /usr
-WORKDIR /usr/src
+COPY src /home/runner
+WORKDIR /home/runner
 RUN bundle install
 
-RUN pwd
 # For github docker action workdir will be '--workdir /github/workspace'
-ENTRYPOINT ["bash", "~/entrypoint.sh"]
+ENTRYPOINT ["bash", "/home/runner/entrypoint.sh"]
