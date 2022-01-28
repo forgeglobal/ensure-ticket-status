@@ -3,9 +3,9 @@ name: Ensure Ticket Status
 on:  
   pull_request:
     # Be aware you cannot use both branches and branches-ignore together 
+    # Be aware this will skip if either the base or the compare branch is in here.
     branches-ignore:
       - master
-      - development
 
 jobs:  
   build:
