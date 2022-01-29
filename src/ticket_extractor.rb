@@ -16,7 +16,7 @@ class TicketExtractor
     compare_branch.scan(ticket_id_regex)
   end
 
-  private 
+  # private 
 
   def ticket_id_regex
     @ticket_id_regex ||= ticket_id_regex_init
@@ -27,7 +27,7 @@ class TicketExtractor
     teams_regex_segment_upper = teams.map{ |team| Regexp.quote(team.upcase) }.join("|")
     teams_regex_segment_lower = teams.map{ |team| Regexp.quote(team.downcase) }.join("|")
     teams_regex_segment = "#{teams_regex_segment_upper}|#{teams_regex_segment_lower}"
-    ticket_id_regex = /(#{teams_regex_segment})\-\d+/
+    ticket_id_regex = /(?:#{teams_regex_segment})\-\d+/
 
     ticket_id_regex
   end
