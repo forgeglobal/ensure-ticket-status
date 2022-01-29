@@ -17,7 +17,7 @@ def verify_pivotal_story(story_json, ticket)
   story_accepted = VALID_PIVOTAL_STATUSES.include?(story_state&.downcase)
 
   raise StandardError.new("Story #{ticket.raw_ticket_id} could not be found in #{TicketSystemQuery::PIVOTAL}.") if story_missing
-  raise StandardError.new("Story #{ticket.raw_ticket_id} is in state '#{story_state&.downcase}', which is not in acceptable state(s) (#{VALID_JIRA_STATUSES}).") if !story_accepted
+  raise StandardError.new("Story #{ticket.raw_ticket_id} is in state '#{story_state&.downcase}', which is not in acceptable state(s) (#{VALID_PIVOTAL_STATUSES}).") if !story_accepted
 end
 
 def jira_ticket_endpoint(ticket_id) 
@@ -40,14 +40,14 @@ def dispatch_ticket_request(ticket)
   when TicketSystemQuery::PIVOTAL
     username, token = ApiCredentials::ticket_system_creds[ticket.ticket_system]
     url = pivotal_story_endpoint(ticket.project_id, ticket.id_segment)
-    puts "curl -s -X GET -H \"X-TrackerToken: #{token}\" -H \"Content-Type: application/json\" #{url}"
+    # puts "curl -s -X GET -H \"X-TrackerToken: #{token}\" -H \"Content-Type: application/json\" #{url}"
     resp = `curl -s -X GET -H "X-TrackerToken: #{token}" -H "Content-Type: application/json" #{url}`
     json_resp = JSON.parse(resp)
     verify_pivotal_story(json_resp, ticket)
   when TicketSystemQuery::JIRA
     username, token = ApiCredentials::ticket_system_creds[ticket.ticket_system]
     url = jira_ticket_endpoint(ticket.raw_ticket_id)
-    puts "curl -s -u #{username}:#{token} -X GET -H \"Content-Type: application/json\" #{url}"
+    # puts "curl -s -u #{username}:#{token} -X GET -H \"Content-Type: application/json\" #{url}"
     resp = `curl -s -u #{username}:#{token} -X GET -H "Content-Type: application/json" #{url}`
     json_resp = JSON.parse(resp)
     verify_jira_ticket(json_resp, ticket)
@@ -65,12 +65,7 @@ ticket_extractor = TicketExtractor.new
 ticket_ids = ticket_extractor.extract_ticket_ids_from_commit_diff(base_branch, compare_branch) + 
                 ticket_extractor.extract_ticket_ids_from_branch_name(compare_branch)
 
-puts ticket_extractor.inspect
-puts ticket_extractor.extract_ticket_ids_from_commit_diff(base_branch, compare_branch)
-puts ticket_extractor.extract_ticket_ids_from_branch_name(compare_branch)
-
 unique_ticket_ids = ticket_ids.flatten.uniq
-puts unique_ticket_ids
 
 ticket_system = TicketSystemQuery.new
 maybe_validation_errors = unique_ticket_ids.map {|ticket_id| 
