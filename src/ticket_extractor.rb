@@ -6,7 +6,7 @@ class TicketExtractor
 
     ticket_ids = commits.split("\n").map { |line| 
       line.scan(ticket_id_regex)
-    }.flatten.uniq
+    }.flatten.map { |ticket_id| ticket_id&.upcase }.uniq
 
     # DEBUG:
     # puts "From commits: "
@@ -17,7 +17,7 @@ class TicketExtractor
   end
 
   def extract_ticket_ids_from_branch_name(compare_branch)
-    ticket_ids = compare_branch.scan(ticket_id_regex)
+    ticket_ids = compare_branch.scan(ticket_id_regex).map { |ticket_id| ticket_id&.upcase }.uniq
 
     # DEBUG:
     # puts "From branch #{compare_branch} extracted tickets: #{ticket_ids}"
