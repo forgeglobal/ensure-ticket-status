@@ -9,11 +9,19 @@ class TicketExtractor
       line.scan(ticket_id_regex)
     }.flatten.uniq
 
+    puts "From commits: "
+    puts commits
+    puts "extracted tickets: #{ticket_ids}"
+
     ticket_ids
   end
 
   def extract_ticket_ids_from_branch_name(compare_branch)
-    compare_branch.scan(ticket_id_regex)
+    ticket_ids = compare_branch.scan(ticket_id_regex)
+
+    puts "From branch #{compare_branch} extracted tickets: #{ticket_ids}"
+
+    ticket_ids
   end
 
   # private 
