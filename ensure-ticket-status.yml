@@ -1,3 +1,6 @@
+# Workflow for https://github.com/forgeglobal/ensure-ticket-status
+# Sample taken from: https://github.com/forgeglobal/ensure-ticket-status/blob/master/ensure-ticket-status.yml
+
 name: Ensure Ticket Status
 
 on:  

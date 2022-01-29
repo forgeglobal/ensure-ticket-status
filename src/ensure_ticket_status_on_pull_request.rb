@@ -40,6 +40,7 @@ def dispatch_ticket_request(ticket)
   when TicketSystemQuery::PIVOTAL
     username, token = ApiCredentials::ticket_system_creds[ticket.ticket_system]
     url = pivotal_story_endpoint(ticket.project_id, ticket.id_segment)
+    # DEBUG:
     # puts "curl -s -X GET -H \"X-TrackerToken: #{token}\" -H \"Content-Type: application/json\" #{url}"
     resp = `curl -s -X GET -H "X-TrackerToken: #{token}" -H "Content-Type: application/json" #{url}`
     json_resp = JSON.parse(resp)
@@ -47,6 +48,7 @@ def dispatch_ticket_request(ticket)
   when TicketSystemQuery::JIRA
     username, token = ApiCredentials::ticket_system_creds[ticket.ticket_system]
     url = jira_ticket_endpoint(ticket.raw_ticket_id)
+    # DEBUG:
     # puts "curl -s -u #{username}:#{token} -X GET -H \"Content-Type: application/json\" #{url}"
     resp = `curl -s -u #{username}:#{token} -X GET -H "Content-Type: application/json" #{url}`
     json_resp = JSON.parse(resp)

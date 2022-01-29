@@ -8,9 +8,10 @@ class TicketExtractor
       line.scan(ticket_id_regex)
     }.flatten.uniq
 
-    puts "From commits: "
-    puts commits
-    puts "extracted tickets: #{ticket_ids}"
+    # DEBUG:
+    # puts "From commits: "
+    # puts commits
+    # puts "extracted tickets: #{ticket_ids}"
 
     ticket_ids
   end
@@ -18,12 +19,13 @@ class TicketExtractor
   def extract_ticket_ids_from_branch_name(compare_branch)
     ticket_ids = compare_branch.scan(ticket_id_regex)
 
-    puts "From branch #{compare_branch} extracted tickets: #{ticket_ids}"
+    # DEBUG:
+    # puts "From branch #{compare_branch} extracted tickets: #{ticket_ids}"
 
     ticket_ids
   end
 
-  # private 
+  private 
 
   def ticket_id_regex
     @ticket_id_regex ||= ticket_id_regex_init
@@ -34,6 +36,7 @@ class TicketExtractor
     teams_regex_segment_upper = teams.map{ |team| Regexp.quote(team.upcase) }.join("|")
     teams_regex_segment_lower = teams.map{ |team| Regexp.quote(team.downcase) }.join("|")
     teams_regex_segment = "#{teams_regex_segment_upper}|#{teams_regex_segment_lower}"
+    # Use noncapturing groups (?:) as .scan calls will only use the first capturing group in the entire regex.
     ticket_id_regex = /(?:#{teams_regex_segment})\-\d+/
 
     ticket_id_regex
