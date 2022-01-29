@@ -2,8 +2,7 @@ require 'json'
 
 class TicketExtractor 
   def extract_ticket_ids_from_commit_diff(base_branch, compare_branch)
-    # parse ticket id out of branch
-    commits = `git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative origin/#{base_branch}..origin/#{compare_branch}`
+    commits = `git log --pretty=format:'%Cred%h%Creset -%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative origin/#{base_branch}..origin/#{compare_branch}`
 
     ticket_ids = commits.split("\n").map { |line| 
       line.scan(ticket_id_regex)
