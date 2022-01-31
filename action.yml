@@ -11,7 +11,7 @@ inputs:
     required: true
     default: "{}"
   teams:
-    description: 'Array of team prefixes for ticker names.'
+    description: 'Array of team prefixes for ticket names.'
     required: true
     default: "[]"
   jira_api_user:
@@ -26,10 +26,6 @@ inputs:
     description: 'API Token to access the Pivotal API.'
     required: true
     default: ""
-  test_var:
-    description: 'Blah'
-    required: true
-    default: ""
   pull_request_compare_branch_name:
     description: 'Branch to be merged into the Base Branch.'
     required: true
@@ -41,15 +37,6 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  # args:
-  #   - ${{ inputs.team_to_project_id }}
-  #   - ${{ inputs.team_to_project_system }}
-  #   - ${{ inputs.teams }}
-  #   - ${{ inputs.jira_api_user }}
-  #   - ${{ inputs.jira_api_token }}
-  #   - ${{ inputs.pivotal_api_token }}
-  #   - ${{ inputs.pull_request_compare_branch_name }}
-  #   - ${{ inputs.pull_request_base_branch_name }}
 branding:
   icon: "git-pull-request"
   color: "orange"
